@@ -51,7 +51,10 @@ tests can be built and run by running in the tests directory
 > make
 > runTests
 
-These are not as extensive as I would like.
+These are not as extensive as I would like. In some cases the tests use
+random numbers to generate random test cases. Some of these test cases
+will sadly fail, illustrating the limitations of the methods. I have not
+taken the time to modify this. So do not worry... just complain to me.
 
 Contact
 =======
