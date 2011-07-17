@@ -1,0 +1,150 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{relsize}
+
+%opening
+\title{Apparent horizon formulae}
+\author{Aaryn Tonita}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+A collection of derivations for the apparent horizon equation in the transverse traceless conformally flat decomposition.
+\end{abstract}
+
+\section{Basic equations}
+The basic equation for the apparent horizon is the vanishing of the expansion on the compact 2-surface. In terms of the normal to the surface, this is
+\begin{equation}
+ H \equiv \nabla_i \tilde{n}^i + k_{ij}\tilde{n}^i\tilde{n}^j - K = 0,
+\end{equation}
+here $\nabla_i$ is the covariant derivative associated with the 3-metric $g_{ij}$, the normal vector satisfies $g_{ij}\tilde{n}^i\tilde{n}^j = 1$, and $k_{ij}$ is the extrinsic curvature associated with the embedding of the 3-slice in the spacetime. Since we are in the maximally sliced, conformally flat, transverse-traceless formulation, we have $K=K_i{}^i = 0$, $g_{ij}=\psi^4 f_{ij}$ with $f_{ij}$ the metric of flat Euclidean 3-space, $K_{ij} = \psi^{-2} A_{ij}$, and $n^i = \psi^{2}\tilde{n}^i$ is the coordinate normal vector. The equation is then
+\begin{equation}
+ \frac{1}{\sqrt{f}\psi^6}\partial_i\left( \sqrt{f}\psi^4 n^i \right) + \frac{A_{ij}n^in^j}{\psi^6} = 0
+\end{equation}
+for the marginally trapped surface with $f = det(f_{ij})$. Expanding this and dropping the $\psi^6$ numerator
+\begin{equation}
+ 4\psi^3 n^i\partial_i \psi + \frac{\psi^4}{\sqrt{f}}n^i\partial_i \sqrt{f} + \psi^4\partial_i n^i + A_{ij}n^in^j = 0
+\end{equation}
+dividing by $4 \psi^3$
+\begin{equation}
+ n^i\partial_i\psi + \frac{\psi}{4}\left( \frac{1}{\sqrt{f}}n^i\partial_i\sqrt{f} + \partial_in^i\right) + \frac{A_{ij}n^in^j}{4\psi^3} = 0. 
+\end{equation}
+
+\subsection{Area, mass and spin}
+The basic equation for the area of a surface $\Omega$ is
+\begin{equation}
+  A = \int_\Omega{\tilde{n}^id\tilde{V}_i}
+\end{equation}
+with $\mathbf{d}\tilde{V} = \sqrt{g}\mathbf{d}V = \sqrt{g} dx^1\wedge dx^2\wedge dx^3$. So the specific equation for conformally flat slices is then
+\begin{equation}
+ A = \int_\Omega{\sqrt{f}\psi^4 n^idV_i}.
+\end{equation}
+The mass is related to the area as $M = \sqrt{A/16\pi}$. The equation for spin can be found in the Living Review on Isolated and dynamical horizons, Eq.~(58)
+\begin{equation}
+ J = -\frac{1}{8\pi}\int_\Omega{\varphi^j\tilde{n}^l k_{jl}\tilde{n}^id\tilde{V}_i}
+\end{equation}
+with $\mathbf{\varphi} = \partial/\partial\phi$ the rotational Killing vector. Substituting for maximal slicing, transverse-traceless and conformally flat variables gives
+\begin{equation}
+ J = -\frac{1}{8\pi}\int_\Omega{\varphi^j n^l A_{jl}\sqrt{f} n^idV_i}.
+\end{equation}
+
+
+
+
+\section{Spherical coordinates, axisymmetry}
+In this case $n^\phi = 0$. However, we will have the extrinsic curvature in Cartesian coordinates so we still need to write the extrinsic curvature terms in terms of (without loss of generality, due to axisymmetry) $A_{xx}$, $A_{xz}$ and $A_{zz}$. We have
+\begin{equation}
+ n^x = \Lambda^x{}_r n^r + \Lambda^x{}_\theta n^\theta = \sin{(\theta)}n^r + r\cos{(\theta)}n^\theta
+\end{equation}
+\begin{equation}
+ n^z = \Lambda^z{}_r n^r + \Lambda^z{}_\theta n^\theta = \cos{(\theta)}n^r - r\sin{(\theta)}n^\theta.
+\end{equation}
+Now the surface is given by the rotation of a curve given by a tuple of points, parameterised by zenithal angle,
+\begin{equation}
+ \gamma(\theta) = \left[\sigma(\theta), \theta, 0\right]
+\end{equation}
+with unnormalized tangent vector
+\begin{equation}
+ \hat{t} = \left[\sigma', 1, 0\right]
+\end{equation}
+one can check that the vector
+\begin{equation}
+ \hat{n} = \left[r, -\frac{\sigma'}{r}, 0\right]
+\end{equation}
+is orthogonal to $\hat{t}$. We will now ignore all occurrences of $\phi$ components to vectors. Their normalized versions are
+\begin{equation}
+ t = \frac{1}{\sqrt{\left(\sigma'\right)^2 + r^2}}\left[\sigma', 1\right]
+\end{equation}
+\begin{equation}
+ n = \frac{1}{\sqrt{\left(\sigma'\right)^2 + r^2}}\left[r, -\frac{\sigma'}{r}\right]
+\end{equation}
+are properly normalized with the metric
+\begin{equation}
+ \displaystyle{
+  f_{ij} \equiv \left[
+  \begin{array}{ccc}
+   1 & 0 & 0\\
+   0 & r^2 & 0\\
+   0 & 0 & r^2\sin^2\theta
+  \end{array} \right].
+ }
+\end{equation}
+From the metric one sees that $\sqrt{f} = r^2\sin\theta$ so that the apparent horizon equation is given by
+\begin{equation}
+ n^i\partial_i\psi + \frac{\psi}{4}\left( \frac{2n^r}{r} + n^\theta\cot\theta + \partial_in^i\right) + \frac{A_{ij}n^in^j}{4\psi^3} = 0.
+\end{equation}
+The simplest choice for $\partial_in^i$ is to make the normal vector field constant along $r$, so
+\begin{equation}
+ n^i\partial_i\psi + \frac{\psi}{4}\left( \frac{2n^r}{r} + n^\theta\cot\theta + \frac{dn^\theta}{d\theta}\right) + \frac{A_{ij}n^in^j}{4\psi^3} = 0.
+\end{equation}
+
+As a check consider $\psi = 1 + m/2r$ and $A_{ij} = 0$. The solution is $\gamma = \left[m/2, \theta, 0\right]$, this means that $n = \left[1, 0\right]$ and
+\begin{equation}
+ \partial_r\psi + \frac{\psi}{4}\frac{2}{r} = -\frac{m}{2r^2} + \frac{\left(1 + \frac{m}{2r}\right) }{4} \frac{2}{r} = -\frac{1}{r} + \frac{1}{r} = 0
+\end{equation}
+where the substitution for $m$ was made.
+
+In summary, the equation for the outer ($\chi = +1$) and inner ($\chi = -1$) horizon are given by
+\begin{equation}
+n^i\partial_i\psi + \frac{\psi}{4}\left( \frac{2n^r}{r} + n^\theta\cot\theta + \frac{dn^\theta}{d\theta}\right) + \chi \frac{A_{ij}n^in^j}{4\psi^3}= 0.
+\end{equation}
+
+\subsection{Horizon quantities in spherical coordinates}
+The area formula is 
+\begin{equation}
+ A = \int_\Omega{r^2\sin\theta \psi^4 (n^rd\theta - n^\theta dr)d\phi }.
+\end{equation}
+Since on the horizon, one has that $r = \sigma(\theta)$, then $dr = \sigma'd\theta$ and subsequently $n^rd\theta - n^\theta dr = (n^r - n^\theta\sigma')d\theta$. So,
+\begin{equation}
+ A = 2\pi\mathlarger{\int}_0^\pi {\sin\theta \psi^4 \frac{r^2 + \left(\sigma'\right)^2}{\sqrt{\left(\sigma'\right)^2 + r^2}}r d\theta} = 2\pi \int_0^\pi {r\psi^4\sqrt{\left(\sigma'\right)^2 + r^2}\;\sin{\theta} \; d\theta}.
+\end{equation}
+Meanwhile, the equation for the spin is given by
+\begin{equation}
+ J = -\frac{1}{8\pi}\int_\Omega{\varphi^j n^l A_{jl} \; r^2\;\sin\theta \; (n^rd\theta - n^\theta dr)d\phi}.
+\end{equation}
+which without much difficulty is equivalent to
+\begin{equation}
+ J = -\frac{1}{4}\int_0^\pi{\varphi^j n^l A_{jl} \; r \; \sqrt{\left(\sigma'\right)^2 + r^2}\;\sin{\theta} \; d\theta}.
+\end{equation}
+The vector $\varphi = \partial/\partial\phi = \partial x/\partial\phi\; \partial/\partial x + \partial y/\partial\phi\; \partial/\partial y$, so since we are going to work on the $\phi = 0$ halfplane in axisymmetry $A_{jl}\varphi^j = r\,\sin\theta\,A_{yl}$. The spin is then
+\begin{equation}
+ J = -\frac{1}{4}\int_0^\pi{ (n^x A_{yx} + n^z A_{yz})\; r^2 \; \sqrt{\left(\sigma'\right)^2 + r^2}\;\sin^2{\theta} \; d\theta}.
+\end{equation}
+With the cartesian components of the normal as given above, This simplifies as follows
+\begin{equation}
+\displaystyle{
+ \begin{array}{rcl}
+  n^xA_{xy} + n^zA_{yz} &=& n^r\sin\theta A_{xy} + n^\theta r \cos\theta A_{xy} + n^r\cos\theta A_{yz} - n^\theta r\sin\theta A_{yz} \\
+   &=&n^r\left( \sin\theta A_{xy} + \cos\theta A_{yz} \right) + r n^\theta \left( \cos\theta A_{xy} - \sin\theta A_{yz} \right) \\
+   &=&\displaystyle{\frac{r\left( \sin\theta A_{xy} + \cos\theta A_{yz} \right) -\sigma' \left( \cos\theta A_{xy} - \sin\theta A_{yz} \right)}{\sqrt{\left(\sigma'\right)^2 + r^2}}}
+ \end{array}.
+}
+\end{equation}
+This yields the expanded formula
+\begin{equation}
+ J = -\frac{1}{4}\int_0^\pi{\left(r\left( \sin\theta A_{xy} + \cos\theta A_{yz} \right) -\sigma' \left( \cos\theta A_{xy} - \sin\theta A_{yz} \right)\right)\,r^2\,\sin^2\theta\,d\theta}
+\end{equation}
+
+\end{document}

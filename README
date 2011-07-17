@@ -1,0 +1,75 @@
+Introduction
+============
+
+LeapingMonkey is an object oriented C++ library for solving differential
+equations using pseudo-spectral methods based on the collocation method.
+The Legendre and Chebyshev (roots and extrema) methods are currently
+implemented although it should be straightforward to implement Fourier
+methods.
+
+There are example programs to find the apparent horizons in black hole
+spacetimes, and to solve the initial data problem in General relativity
+for Bowen-York initial data with arbitrary distribution generated
+singularities. In particular, the Hamiltonian object is able to create
+single boosted spinning punctures and trumpets as well as giving those
+black holes spin quadrupole moments.
+
+Installing
+==========
+
+To install, modify the makefile and set the GSL and MKL variables to
+point to the MKL and GSL libraries and include directories and then
+simply type 
+
+> make
+
+to install in the local directory. Documentation can be generated with
+
+> make docs
+
+so long as Doxygen, latex and dot are installed and in the path. Extra
+documentation can be made by entering the docs directory and typing make
+there:
+
+> cd docs; make
+
+This will generate pdf documents that pedagogically derive some of the
+equations needed by the various objects (currently only the apparent
+horizon). To use the LeapingMonkey library more generally, a library
+path can be set using prefix=<libpath> and LeapingMonkey will be
+installed there:
+
+> make LeapingMonkey prefix=<libpath>
+
+Unit tests
+==========
+
+What unit tests exist are located in files named TestObject.C and the
+tests can be built and run by running in the tests directory
+
+> cd tests
+> make
+> runTests
+
+These are not as extensive as I would like.
+
+Contact
+=======
+
+If you find LeapingMonkey and the programs using it to be useful please
+contact me at atonita@gmail.com with any comments or questions that come
+to your mind. Especially contact me if you are interested in extending
+the functionality of LeapingMonkey or in extending the research related
+results produced by the current code.
+
+License
+=======
+
+LeapingMonkey and associated content are licensed under the GPLv3.
+The wording of the GPLv3 can be found in the file COPYING. LeapingMonkey
+is Copyright 2011, Aaryn Tonita.
+
+Attribution
+===========
+
+The work is currently unpublished.

@@ -1,0 +1,3 @@
+#! /bin/sh
+
+TestLegendre && TestSpectralHorizon && TestConformal && TestChebyshevExtrema && TestChebyshevRoots && TestBasis2D && TestSphericalBasis && TestExtrinsicCurvature && TestHamiltonian && TestSingularPart && TestNewtonRaphson1D
