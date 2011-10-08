@@ -1,4 +1,4 @@
-#include "TestLegendre.h"
+#include "TestLegendre.HH"
 int main() {
   TestLegendre test;
   test.runTests();

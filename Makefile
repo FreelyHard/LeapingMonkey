@@ -46,7 +46,7 @@ LeapingMonkey_files := Basis.C ChebyshevRoots.C SphericalBasis.C \
 # Do not modify below here.
 #
 #######################################################################
-.PHONY: clean all docs
+.PHONY: clean all docs install
 all: $(LIBRARIES) $(PROGRAMS)
 
 clean:
@@ -65,8 +65,12 @@ link=$(COMMONLIBS) $$($(1)_libs)
 prefix=.
 
 libdir=$(prefix)/lib
+incdir=$(prefix)/include
 $(libdir) :
 	$(Q)mkdir $(libdir)
+
+$(incdir) :
+	$(Q)mkdir $(incdir)
 
 $(builddir):
 	$(Q)mkdir $(builddir)
@@ -84,8 +88,9 @@ endef
 define LIBRARY_template
 $(1): $(libdir)/lib$(1).a
 
-$(libdir)/lib$(1).a: $$(call objs, $$($(1)_files)) | $(libdir)
+$(libdir)/lib$(1).a: $$(call objs, $$($(1)_files)) | $(libdir) $(incdir)
 	$(Q)ar rcs $$@ $$^
+	$(Q)cp $(srcdir)/*.h $(incdir)
 	@echo "----> Built library: $(1)."
 ALL_OBJS += $$(call objs, $$($(1)_files))
 endef

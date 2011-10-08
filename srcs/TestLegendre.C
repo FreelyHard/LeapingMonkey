@@ -1,4 +1,4 @@
-#include "TestLegendre.h"
+#include "TestLegendre.HH"
 #include <iostream>
 #include <cstdlib>
 #include <time.h>
@@ -10,32 +10,32 @@ double abs(double x) {
 }
 
 void TestLegendre::runTests() {
-  printf("Running tests on Legendre polynomial class.\n");
+  std::cout << "Running tests on Legendre polynomial class.\n";
   int tests = 0;
   assert(setRank(5) == true);
 
   testBasisFunction();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testEvaluate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testInterpolate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testCoefficientsToValuesMatrices();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testDifferentiateCoefficients();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testDifferentiate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testValuesToCoefficients();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
-  printf("OK. Ran %d tests successfully.\n",tests);
+  std::cout << "OK. Ran " << tests << " tests successfully.\n";
 }
 
 void TestLegendre::testBasisFunction() {

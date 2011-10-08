@@ -85,38 +85,38 @@ double abs(double x) {
 }
 
 void TestChebyshevRoots::runTests() {
-  printf("Running tests on ChebyshevRoots polynomial class.\n");
+  std::cout << "Running tests on ChebyshevRoots polynomial class.\n";
   int tests = 0;
   assert(setRank(5) == true);
 
   testBasisFunction();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testEvaluate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testInterpolate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testCoefficientsToValuesMatrices();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testDifferentiateCoefficients();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testDifferentiate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testValuesToCoefficients();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testChebyshevToTaylor();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
   testIntegrate();
-  printf(".\n"); tests++; 
+  std::cout << ".\n"; tests++; 
 
-  printf("OK. Ran %d tests successfully.\n",tests);
+  std::cout << "OK. Ran " << tests << " tests successfully.\n";
 }
 
 void TestChebyshevRoots::testIntegrate() {

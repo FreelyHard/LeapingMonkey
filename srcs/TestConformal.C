@@ -11,14 +11,14 @@ double abs(double x) {
 }
 
 int main() {
-  printf("Testing conformal factor and Apparent horizon equations.\n");
+  std::cout << "Testing conformal factor and Apparent horizon equations.\n";
   ConformalFactor psi(1.0,0.0, 0.0);
   double r0 = 0.5;
   double z0 = 0.0;
   double curvature = 4.0*psi.dpsidr(r0, z0)/psi.psi(r0, z0);
   curvature = -curvature - 1./r0;
   assert(curvature == 2.0);
-  printf(".\n");
+  std::cout << ".\n";
 
   srand(time(NULL));
   psi.setMoments(1.0, 0.5, 0.5);
@@ -31,6 +31,6 @@ int main() {
     double lap = psirr + psizz + psirOverr;
     assert(abs(lap) < 1.0e-12); // This will sometimes randomly fail if one gets too close to the singularity.
   }
-  printf(".\n");
-  printf("OK.\n");
+  std::cout << ".\n";
+  std::cout << "OK.\n";
 }

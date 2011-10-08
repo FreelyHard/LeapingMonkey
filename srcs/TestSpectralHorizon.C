@@ -10,7 +10,7 @@ double abs( double x) {
 }
 
 int main() {
-  printf("Testing SpectralHorizon object.\n");
+  std::cout << "Testing SpectralHorizon object.\n";
   Legendre* basis = new Legendre();
   SpectralHorizon sphere(1.0,0.0,0.0,basis);
   int nBasis = 5;
@@ -21,6 +21,6 @@ int main() {
   sphere.findHorizon(1.0e-12, 10);
   const double* residue = sphere.getResidue();
   for (int i = 0; i < nBasis; i++) assert(abs(residue[i]) < 7.0e-15);
-  printf(".\n");
-  printf("OK.\n");
+  std::cout << ".\n";
+  std::cout << "OK.\n";
 }
