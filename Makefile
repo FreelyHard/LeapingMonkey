@@ -61,6 +61,7 @@ docs:
 # filenames.
 sources=$(patsubst %.C, $(srcdir)/%.C, $(1))
 objs=$(patsubst %.C, $(builddir)/%.o, $(1))
+depfiles=$(patsubst %.C, $(builddir)/%.d, $(1))
 link=$(COMMONLIBS) $$($(1)_libs)
 prefix=.
 
@@ -90,7 +91,7 @@ $(1): $(libdir)/lib$(1).a
 
 $(libdir)/lib$(1).a: $$(call objs, $$($(1)_files)) | $(libdir) $(incdir)
 	$(Q)ar rcs $$@ $$^
-	$(Q)cp $(srcdir)/*.h $(incdir)
+	$(Q)cp `cat $$(call depfiles, $$($(1)_files)) | sed 's/ /\n/g' | grep $(srcdir) | grep '\.h' | sort | uniq | sed 's/\n/ /g'` $(incdir)
 	@echo "----> Built library: $(1)."
 ALL_OBJS += $$(call objs, $$($(1)_files))
 endef

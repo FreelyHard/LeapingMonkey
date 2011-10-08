@@ -41,6 +41,11 @@ installed there:
 
 > make LeapingMonkey prefix=<libpath>
 
+If something fails during the build process, the commands and their
+output can be displayed by changing the variable Q to nothing:
+
+> make Q=
+
 Unit tests
 ==========
 
