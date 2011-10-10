@@ -45,6 +45,36 @@
  * here the functions \f$g\f$ and \f$h\f$ should be considered boundary
  * conditions, (or initial conditions if \f$h\f$ is defined at
  * \f$x=a\f$).
+ *
+ * To make it more clear what the various virtual functions do, we write the
+ * problem more explicitly:
+ * \f[
+ *  \begin{array}{rcl}
+ *    \displaystyle{f\left(x(\xi), u(x(\xi)), 
+ *    \frac{d\xi}{dx}\frac{du}{d\xi}, 
+ *    \frac{d\xi}{dx}\frac{d}{d\xi} 
+ *    \left(\frac{d\xi}{dx}\frac{du}{d\xi}\right)\right)} = 0
+ *    & \mathrm{ for } & x \in [a,b]\\
+ *    \displaystyle{g\left(u(x(\xi)), \frac{d\xi}{dx}\frac{du}{d\xi}\right)}
+ *    = 0 &\mathrm{ for }& x = a\\
+ *    \displaystyle{h\left(u(x(\xi)), \frac{d\xi}{dx}\frac{du}{d\xi}\right)} 
+ *    = 0 &\mathrm{ for }& x = b\ \mathrm{or}\ a
+ *  \end{array}
+ * \f]
+ * then the function map() provides \f$x(\xi)\f$ while the function 
+ * dInverseMap() provides \f$\frac{d\xi}{dx}\f$. The functions f(), dfdu(), 
+ * dfdup(), dfdupp() are respectively \f$f\f$, 
+ * \f$\frac{\partial f}{\partial u}\f$
+ * \f$\frac{\partial f}{\partial u'}\f$, and 
+ * \f$\frac{\partial f}{\partial u''}\f$ where \f$u'=\frac{du}{dx}\f$. 
+ * There are similar definitions for g() and h(). The boundary conditions
+ * default to homogeneous dirichlet boundary conditions, and so only need to
+ * be overridden when they are different. The derivatives of \f$f\f$ are needed
+ * to compute the internal Jacobian to find the Newton-Raphson updates.
+ *
+ * With the specification of those functions, the template method can solve
+ * the discrete problem. It computes the N by N Jacobian for the values at
+ * collocation points internally and iterates on them.
  */
 class NewtonRaphson1D {
   public:

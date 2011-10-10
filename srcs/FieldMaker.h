@@ -86,7 +86,7 @@ class FieldMaker {
      * \param bareMass The bareMass of the Hamiltonian.
      * \param momentum The momentum of the ExtrinsicCurvature.
      * \param spin The spin of the ExtrinsicCurvature.
-     * \param mass The mass of the ExtrinsicCurvature.
+     * \param trumpetMass The mass term of the ExtrinsicCurvature.
      */
     Fields* createFields(double bareMass, double momentum, 
         double spin, double trumpetMass);
@@ -97,7 +97,7 @@ class FieldMaker {
      * \param bareMass The bareMass of the Hamiltonian.
      * \param momentum The momentum of the ExtrinsicCurvature.
      * \param spin The spin of the ExtrinsicCurvature.
-     * \param mass The mass of the ExtrinsicCurvature.
+     * \param trumpetMass The mass of the ExtrinsicCurvature.
      * \param quadZ The z derivative of a curl.
      * \param quadPhi The curl of a curl quadrupole moment.
      */

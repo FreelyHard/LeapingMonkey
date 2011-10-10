@@ -70,8 +70,6 @@ class SphericalHorizon: public NewtonRaphson1D {
      * \param upp The second derivative of the radial function
      *  \f$\frac{d^2\sigma}{d\theta^2}\f$
      * \param theta The zenithal angle.
-     * \param chi The selector for the outer (+1) or inner (-1)
-     * horizon.
      * \retval The residual of the apparent horizon equation.
      */
     virtual double f(double theta, double u, double up, double upp);
@@ -85,8 +83,6 @@ class SphericalHorizon: public NewtonRaphson1D {
      * \param upp The second derivative of the radial function
      *  \f$\frac{d^2\sigma}{d\theta^2}\f$
      * \param theta The zenithal angle.
-     * \param chi The selector for the outer (+1) or inner (-1)
-     * horizon.
      * \retval The derivative of the apparent horizon equation with
      * respect to \f$\sigma\f$.
      */
@@ -101,8 +97,6 @@ class SphericalHorizon: public NewtonRaphson1D {
      * \param upp The second derivative of the radial function
      *  \f$\frac{d^2\sigma}{d\theta^2}\f$
      * \param theta The zenithal angle.
-     * \param chi The selector for the outer (+1) or inner (-1)
-     * horizon.
      * \retval The derivative of the apparent horizon equation with
      * respect to \f$\sigma' = \frac{d\sigma}{d\theta}\f$.
      */
@@ -117,8 +111,6 @@ class SphericalHorizon: public NewtonRaphson1D {
      * \param upp The second derivative of the radial function
      *  \f$\frac{d^2\sigma}{d\theta^2}\f$
      * \param theta The zenithal angle.
-     * \param chi The selector for the outer (+1) or inner (-1)
-     * horizon.
      * \retval The derivative of the apparent horizon equation with
      * respect to \f$\sigma'' = \frac{d^2\sigma}{d\theta^2}\f$.
      */

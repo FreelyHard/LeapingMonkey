@@ -1,5 +1,24 @@
 /**
  * \mainpage
- * One might jump right to Hamiltonian to see the main purpose of this
- * code at work.
+ * \section INTRO Introduction
+ * The purpose of LeapingMonkey is to provide a C library capable of producing
+ * the various data structures and methods necessary to solve partial
+ * differential equations using pseudo-spectral methods. Currently supported
+ * spectral expansions are the Chebyshev polynomials using the roots or
+ * extrema as the collocations (via ChebyshevRoots or ChebyshevExtrema), as well as the Legendre polynomials using
+ * the roots alone.
+ *
+ * Each basis provides functionality to get the collocation points, as well
+ * as the matrix which differentiates a function represented by a vector of
+ * values at the collocation points. A prepackaged Newton-Raphson algorithm
+ * is also provided for 1-d problems: NewtonRaphson1D.
+ *
+ * The support in 2D is not quite as robust. A tensor product basis object 
+ * Basis2D is provided, as well as a specific coordinate system choice:
+ * SphericalBasis.
+ *
+ * One might jump right to Hamiltonian to see the original purpose of this
+ * code. The original use was to solve the nonlinear Hamiltonian constraint
+ * in the conformally-flat transverse traceless decomposition of the 
+ * initial value problem in general relativity.
  */
