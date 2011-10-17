@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <cassert>
-#include "mkl_cblas.h"
+#include "cblas.h"
 // No, I'm not proud of myself.
 #define private protected
 #include "SphericalBasis.h"

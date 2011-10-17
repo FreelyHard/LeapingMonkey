@@ -1,10 +1,11 @@
 #include <iostream>
 #include <cmath>
+#include <string>
 
 #include "NewtonRaphson1D.h"
 
-#include "mkl_lapack.h"
-#include "mkl_cblas.h"
+#include "lapacke.h"
+#include "cblas.h"
 
 bool NewtonRaphson1D::computeSolution(double* u, void* constants,
     double tolerance, int maxIterations) {
@@ -38,6 +39,8 @@ bool NewtonRaphson1D::computeSolution(double tolerance, int maxIterations) {
   // Start grinding.
   double totalResidue = getTotalResidue();
   int nIterations = 0;
+  for (int i = 0; i < basis->getRank(); i++) {
+  }
   while (totalResidue > tolerance && nIterations < maxIterations) {
     totalResidue = singleNewtonRaphson();
     nIterations++;
@@ -78,7 +81,7 @@ void NewtonRaphson1D::computeDerivatives() {
   for (int iRow = 0; iRow < nBasis; iRow++) {
     sigmap[iRow] = 0;
     sigmapp[iRow] = 0;
-    for (int iCol = 0; iCol < nBasis; iCol++) {
+    for (int iCol = nBasis-1; iCol >= 0; iCol--) {
       int i = iRow*nBasis + iCol;
       sigmap[iRow] += diff[i]*sigma[iCol];
       sigmapp[iRow] += doubleDiff[i]*sigma[iCol];
@@ -99,7 +102,6 @@ void NewtonRaphson1D::computeDifferentiationMatrices() {
   diff = new double[nBasis*nBasis];
   const double* xi = basis->getAbscissas();
   for (int iRow = 0; iRow < nBasis; iRow++) {
-    // xi = cos(theta) so...
     double dxidx = dInverseMap(xi[iRow]);
     for (int iCol = 0; iCol < nBasis; iCol++) {
       int index = iRow*nBasis + iCol;
@@ -115,21 +117,23 @@ void NewtonRaphson1D::computeDifferentiationMatrices() {
 
 double NewtonRaphson1D::singleNewtonRaphson() {
   int nBasis = basis->getRank();
-  // Lapack, since it is fortran, needs the transpose of matrices.
   double* jac = getJacobian();
-  double A[nBasis*nBasis];
-  for (int iRow = 0; iRow < nBasis; iRow++) {
-    for (int iCol = 0; iCol < nBasis; iCol++) {
-      A[iRow + iCol*nBasis] = jac[iRow*nBasis + iCol];
-    }
-  }
-  delete[] jac;
 
-  // Call lapack Double GEneral precision SolVe routine.
-  int one = 1;
+  // The following is exactly lapack's dgesv written for the transpose.
+  //  Because lapacke wants one to invert ldb, I had to figure this out...
   int pivots[nBasis];
-  int info = 0;
-  dgesv(&nBasis, &one, A, &nBasis, pivots, residue, &nBasis, &info);
+  int info = 0, one = 1;
+
+  // Compute LU decomposition.
+  LAPACK_dgetrf(&nBasis, &nBasis, jac, &nBasis, pivots, &info);
+
+  // Only fortran thinks that it is the transpose
+  std::string transpose = "Transpose"; 
+  char trans = transpose.c_str()[0];
+  // Solve matrix equation given the LU decomposition of the transpose.
+  LAPACK_dgetrs(&trans, &nBasis, &one, jac, &nBasis, pivots, 
+      residue, &nBasis, &info);
+  delete[] jac;
   if (info != 0) {
     std::cerr << "Error occured in inversion.\n";
     return -1.0;
@@ -149,7 +153,6 @@ double kroneckerDelta(int i, int j) {
 }
 
 double* NewtonRaphson1D::getJacobian() {
-  //TODO: return the transpose.
   int nBasis = basis->getRank();
   const double* xi = basis->getAbscissas();
   double* jac = new double[nBasis*nBasis];

@@ -1,6 +1,6 @@
 #include "Basis.h"
-#include "mkl_lapack.h"
-#include "mkl_cblas.h"
+#include "lapacke.h"
+#include "cblas.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -52,17 +52,16 @@ double* Basis::coefficientsToValuesMatrix() {
 }
 
 const double* Basis::getValuesToCoefficientsMatrix() {
+#warning "Should maybe do some error checking."
   if (valuesToCoefficients == NULL) {
     valuesToCoefficients = coefficientsToValuesMatrix();
     int pivots[nBasis];
-    int error;
     // Lapack LU decomposition.
-    dgetrf(&nBasis,&nBasis,valuesToCoefficients,&nBasis,pivots,&error);
+    int error = LAPACKE_dgetrf(LAPACK_ROW_MAJOR, nBasis, nBasis,
+        valuesToCoefficients, nBasis, pivots);
     // Compute the inverse from the LU decomposition.
-    int lwork = nBasis*nBasis;
-    double scratchSpace[lwork]; // Should compute this optimally...
-    dgetri(&nBasis, valuesToCoefficients, &nBasis, pivots,
-        scratchSpace, &lwork, &error);
+    error = LAPACKE_dgetri(LAPACK_ROW_MAJOR, nBasis, valuesToCoefficients,
+        nBasis, pivots);
   }
   return valuesToCoefficients;
 }

@@ -2,8 +2,8 @@
 #include "SpectralHorizonMacros.h"
 #include "NewtonRaphson1D.h"
 
-#include "mkl_lapack.h"
-#include "mkl_cblas.h"
+#include "lapacke.h"
+#include "cblas.h"
 
 #include <math.h>
 #include <cstdlib>

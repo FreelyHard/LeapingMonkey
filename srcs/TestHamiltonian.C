@@ -7,7 +7,7 @@
 #define protected public
 #define private public
 #include "Hamiltonian.h"
-#include "mkl_lapack.h"
+#include "lapacke.h"
 #define N1 13
 #define N2 7
 #define REGPOWER 2.
@@ -44,8 +44,8 @@ void TestHamiltonian::runResidueTest() {
   regPower = 0.;
   mass = 0.0;
   for (int iTheta = 0; iTheta < nTheta; iTheta++) {
-    sigma[iTheta] = -5. + 10.0*(double)rand()/(double)RAND_MAX;
-    betaOverSigma7[iTheta] = -5. + 10.0*(double)rand()/(double)RAND_MAX;
+    sigma[iTheta] = -5. + 1.0*(double)rand()/(double)RAND_MAX;
+    betaOverSigma7[iTheta] = -5. + 1.0*(double)rand()/(double)RAND_MAX;
     for (int iR = 0; iR < nRadial; iR++) {
       int iFunc = basis->functionIndex(iR, iTheta);
       u[iFunc] = -1.;
@@ -59,7 +59,7 @@ void TestHamiltonian::runResidueTest() {
   for (int iR = 0; iR < nRadial - 1; iR++) {
     for (int iTheta = 0; iTheta < nTheta; iTheta++) {
       int iResidue = basis->functionIndex(iR, iTheta);
-      assert(abs(residue[iResidue]) < 1.0e-12);
+      assert(abs(residue[iResidue]) < 1.0e-11);
     }
   }
 }
@@ -112,7 +112,7 @@ void TestHamiltonian::runJacobianTest() {
           gradient += jacobian[iTranspose]*r[iR]*r[iR];
         }
       }
-      assert(abs(gradient/pow(r[igR], regPower+2.)-6) < 1.e-12);
+      assert(abs(gradient/pow(r[igR], regPower+2.)-6) < 5.e-12);
     }
   }
 }

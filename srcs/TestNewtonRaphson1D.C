@@ -3,12 +3,13 @@
 #include <ctime>
 #include <cmath>
 
+#define private public
 #include "NewtonRaphson1D.h"
 #include "ChebyshevExtrema.h"
 
 #define RANK 31
 #define TOLERANCE 1.0e-16
-#define MAXITERATIONS 5
+#define MAXITERATIONS 1
 
 double abs(double x) {
   if (x < 0.0) {
@@ -21,6 +22,8 @@ class TestNewtonRaphson1D: public NewtonRaphson1D {
   public:
     TestNewtonRaphson1D(Basis* aBasis);
     void runTests();
+    void runJacobianTest();
+    void runResidueTest();
   protected:
     virtual double f(double x, double u, double up, double upp);
     virtual double dfdu(double x, double u, double up, double upp);
@@ -67,9 +70,92 @@ TestNewtonRaphson1D::TestNewtonRaphson1D(Basis* aBasis) :
   betaiv  =  (g0*rminus - h0)*exp(rplus )/(rminus - rplus);
 }
 
+void TestNewtonRaphson1D::runResidueTest() {
+  registerBoundaries(BOUNDARY, BOUNDARY);
+  double u[RANK];
+  for (int i = 0; i < RANK; i++) u[i] = 0;
+  setPointerToSolution(u);
+  double up[RANK], upp[RANK];
+  sigmap = up;
+  sigmapp = upp;
+  computeDifferentiationMatrices();
+  computeDerivatives();
+  residue = new double[RANK];
+  double totalResidue = getTotalResidue();
+
+  assert(abs(residue[0] - g0) < 1.0e-15);
+  for (int i = 1; i < RANK-1; i++) {
+    assert(abs(residue[i]) < 1.0e-15);
+  }
+  assert(abs(residue[RANK-1] - h0) < 1.0e-15);
+
+  delete[] residue;
+  sigma = NULL;
+  sigmap = NULL;
+  sigmapp = NULL;
+  delete[] diff;
+  delete[] doubleDiff;
+}
+
+void TestNewtonRaphson1D::runJacobianTest() {
+  registerBoundaries(BOUNDARY, BOUNDARY);
+  double u[RANK];
+  for (int i = 0; i < RANK; i++) u[i] = 0;
+  setPointerToSolution(u);
+  double up[RANK], upp[RANK];
+  sigmap = up;
+  sigmapp = upp;
+  computeDifferentiationMatrices();
+  computeDerivatives();
+  residue = new double[RANK];
+  double* jac = getJacobian();
+
+  double fdjac[RANK*RANK];
+  
+  double h = 1.0e-5;
+  double residueplus[RANK];
+  for (int iCollocation = 0; iCollocation < RANK; iCollocation++) {
+    u[iCollocation] = h;
+    computeDerivatives();
+    getTotalResidue();
+    for (int i = 0; i < RANK; i++) residueplus[i] = residue[i];
+
+    u[iCollocation] = -h;
+    computeDerivatives();
+    getTotalResidue();
+    for (int i = 0; i < RANK; i++) {
+      int ijac = i*RANK + iCollocation;
+      fdjac[ijac] = (residueplus[i] - residue[i])/(2*h);
+    }
+    
+    u[iCollocation] = 0;
+  }
+
+  for (int i = 0; i < RANK; i++) {
+    for (int j = 0; j < RANK; j++) {
+      int ijac = i*RANK + j;
+      assert(fdjac[ijac]+jac[ijac] < 2.0e-12);
+    }
+  }
+
+  delete[] residue;
+  sigma = NULL;
+  sigmap = NULL;
+  sigmapp = NULL;
+  delete[] diff;
+  delete[] doubleDiff;
+  delete[] jac;
+}
+
 void TestNewtonRaphson1D::runTests() {
   std::cout << "Testing Newton-Raphson 1D class.\n";
   int nTests = 0;
+
+  runResidueTest();
+  nTests++; std::cout << ".\n";
+
+  runJacobianTest();
+  nTests++; std::cout << ".\n";
 
   runBCTest();
   nTests++; std::cout << ".\n";
@@ -80,14 +166,18 @@ void TestNewtonRaphson1D::runTests() {
 void TestNewtonRaphson1D::runBCTest() {
   registerBoundaries(BOUNDARY, BOUNDARY);
   double u[RANK];
-  computeSolution(u, NULL, TOLERANCE, MAXITERATIONS);
   const double* x = basis->getAbscissas();
+  for (int i = 0; i < RANK; i++) {
+    u[i] = 0;
+  }
+  computeSolution(u, NULL, TOLERANCE, MAXITERATIONS);
   for (int i = 0; i < RANK; i++) {
     double solution = alphabc*exp(rminus*x[i]) + betabc*exp(rplus*x[i]);
     if (!(abs( u[i] - solution) < 1.0e-10)) {
       std::cerr << "Bad luck. Sometimes the random number make the";
       std::cerr << " exponential solution converge very poorly. Try again.\n";
       bool solutionWithinTolerance = (abs( u[i] - solution) < 1.0e-10);
+      std::cout << u[i] - solution << "\n";
       assert(solutionWithinTolerance);
     }
   }

@@ -1,6 +1,6 @@
 #include "ChebyshevExtrema.h"
-#include "mkl_lapack.h"
-#include "mkl_cblas.h"
+#include "lapacke.h"
+#include "cblas.h"
 #include <stdio.h>
 #include <iostream>
 #include <math.h>

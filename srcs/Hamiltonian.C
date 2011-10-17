@@ -4,8 +4,8 @@
 #include <string>
 #include <sstream>
 
-#include "mkl_cblas.h"
-#include "mkl_lapack.h"
+#include "cblas.h"
+#include "lapacke.h"
 
 #include "Hamiltonian.h"
 #include "SingularPart.h"
@@ -287,10 +287,12 @@ bool Hamiltonian::newtonRaphson(double tolerance, int maxIterations) {
   double residue[nPoints];
   double totalResidue = fillResidue(residue);
   int nIterations = 0;
-  int one = 1, pivots[nPoints], info;
+  int one = 1, pivots[nPoints];
   while (totalResidue > tolerance && nIterations++ < maxIterations) {
     fillJacobian(jacobian);
-    dgesv(&nPoints, &one, jacobian, &nPoints, pivots, residue, &nPoints, &info);
+#warning "TODO: Change to ROW major ordering."
+    int info = LAPACKE_dgesv(LAPACK_COL_MAJOR, nPoints, one, jacobian,
+        nPoints, pivots, residue, nPoints);
     if (info == 0) {
       for (int i = 0; i < nPoints; i++) u[i] += residue[i];
       totalResidue = fillResidue(residue);

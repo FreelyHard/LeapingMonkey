@@ -1,8 +1,8 @@
 #include <cmath>
 #include <iostream>
 
-#include "mkl_cblas.h"
-#include "mkl_lapack.h"
+#include "cblas.h"
+#include "lapacke.h"
 #include "SingularPart.h"
 
 bool SingularPart::newtonRaphson(double* sigma, double* beta,
@@ -27,8 +27,10 @@ bool SingularPart::newtonRaphson(double* sigma, double* beta,
       jacobian[iDelta] += p*(p-1.) - 0.875*beta[i]*pow(sigma[i], -8);
     }
     // Solve the linear system.
-    int one = 1, pivots[nTheta], info;
-    dgesv(&nTheta, &one, jacobian, &nTheta, pivots, residue, &nTheta, &info);
+    int one = 1, pivots[nTheta];
+#warning "TODO: Don't need to compute transpose."
+    int info = LAPACKE_dgesv(LAPACK_COL_MAJOR, nTheta, one, jacobian, 
+        nTheta, pivots, residue, nTheta);
     for (int i = 0; i < nTheta; i++) {
       sigma[i] += residue[i];
     }

@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cassert>
 
+#include "cblas.h"
 #include "ChebyshevExtrema.h"
 
 /**
@@ -73,6 +74,12 @@ class TestChebyshevExtrema: public ChebyshevExtrema {
      * Tests the ability to regain the coefficients from the values.
      */
     void testValuesToCoefficients();
+
+    /**
+     * \brief Tests how well the valuesToCoefficients matrix is
+     * the inverse of the coefficientsToValues matrix.
+     */
+    void testValuesToCoefficientsInversion();
 };
 
 double abs(double x) {
@@ -106,10 +113,34 @@ void TestChebyshevExtrema::runTests() {
   testValuesToCoefficients();
   std::cout << ".\n"; tests++; 
 
+  testValuesToCoefficientsInversion();
+  std::cout << ".\n"; tests++; 
+
   testIntegrate();
   std::cout << ".\n"; tests++; 
 
   std::cout << "OK. Ran " << tests << " tests successfully.\n";
+}
+
+void TestChebyshevExtrema::testValuesToCoefficientsInversion() {
+  setRank(22);
+  const double *v2c = getValuesToCoefficientsMatrix();
+  const double *c2v = coefficientsToValuesMatrix();
+  double identity[nBasis*nBasis];
+  cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
+    nBasis, nBasis, nBasis, 1.0, v2c, nBasis, c2v, nBasis,
+    0.0, identity, nBasis);
+  for (int iRow = 0; iRow < nBasis; iRow++) {
+    for (int iCol = 0; iCol < nBasis; iCol++) {
+      int iMatrix = iRow*nBasis + iCol;
+      if (iRow != iCol) {
+        assert(abs(identity[iMatrix]) < 1.e-15);
+      } else {
+        assert(abs(identity[iMatrix]-1) < 1.e-15);
+      }
+    }
+  }
+  setRank(5);
 }
 
 void TestChebyshevExtrema::testIntegrate() {
@@ -200,6 +231,19 @@ void TestChebyshevExtrema::testDifferentiate() {
     .12500000000000000001, .16789321881345247559, -.37500000000000000003};
   for (int i = 0; i < 5; i++) 
     assert(abs(derivative[i]+solution[i]) < 4.E-15);
+
+  // Derivative of a constant should be zero to high precision.
+  setRank(22);
+  const double *diff = getDifferentiationMatrix();
+  for (int iRow = 0; iRow < nBasis; iRow++) {
+    double rowSum = 0;
+    for (int iCol = 0; iCol < nBasis; iCol++) {
+      int iMatrix = iRow*nBasis + iCol;
+      rowSum += diff[iMatrix];
+    }
+    assert(abs(rowSum) < 1.0e-13);
+  }
+  setRank(5);
 }
 
 void TestChebyshevExtrema::testValuesToCoefficients() {

@@ -2,7 +2,7 @@
 #include <iostream>
 #include "SphericalBasis.h"
 #include "ChebyshevRoots.h"
-#include "mkl_cblas.h"
+#include "cblas.h"
 
 double* SphericalBasis::tensorInterpolate(const double* u, const double* r,
     int nR, const double* theta, int nTheta) {
@@ -224,7 +224,7 @@ int SphericalBasis::getRank(Direction dir) {
   } else if (dir == COORD2) {
     return thetaBasis->getRank();
   }
-  return NULL;
+  return 0;
 }
 
 int SphericalBasis::functionIndex(int i, int j) {
