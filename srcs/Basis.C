@@ -9,7 +9,7 @@ Basis::~Basis() {
   delete[] valuesToCoefficients;
 }
 
-int Basis::getRank() {
+int Basis::getRank() const {
   return nBasis;
 }
 

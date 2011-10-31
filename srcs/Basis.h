@@ -76,7 +76,7 @@ class Basis {
      * number of collocation points, etc.
      * \retval The dimension of the function space spanned by the basis.
      */
-    int getRank();
+    int getRank() const;
 
     /**
      * Returns the index into the matrices.
