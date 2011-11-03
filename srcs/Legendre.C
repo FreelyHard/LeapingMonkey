@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <iostream>
 
-double Legendre::alpha(int n, double x) {
+double Legendre::alpha(int n, double x) const {
   return -(2.0*n - 1.0)/(double)n*x;
 }
 
-double Legendre::beta(int n, double x) {
+double Legendre::beta(int n, double x) const {
   return (n - 1.0)/(double)n;
 }
 
@@ -38,7 +38,7 @@ bool Legendre::setRank(int N) {
   return true;
 }
 
-double* Legendre::coefficientsOfDerivativeMatrix() {
+double* Legendre::coefficientsOfDerivativeMatrix() const {
   double* differentiate = new double[nBasis*nBasis];
   for (int i = 0; i < nBasis*nBasis; i++) differentiate[i] = 0.0;
   for (int iRow = 0; iRow < nBasis; iRow++) {
@@ -50,7 +50,7 @@ double* Legendre::coefficientsOfDerivativeMatrix() {
   return differentiate;
 }
 
-double Legendre::evaluate(double x, double* coeffs) {
+double Legendre::evaluate(double x, const double* coeffs) const {
   double pMinus1 = 1.0;
   double p = x;
   double result = coeffs[0] + x*coeffs[1];

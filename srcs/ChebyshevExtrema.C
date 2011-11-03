@@ -31,3 +31,11 @@ bool ChebyshevExtrema::setRank(int N) {
   }
   return false;
 }
+
+double *ChebyshevExtrema::getAbscissas(int N) const {
+  double *x = new double[N];
+    for (int i = 0; i < N; i++) {
+      x[N - 1 - i] = cos(M_PI*(double)i/(double)(N - 1));
+    }
+  return x;
+}

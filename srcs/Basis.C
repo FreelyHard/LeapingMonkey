@@ -13,14 +13,14 @@ int Basis::getRank() const {
   return nBasis;
 }
 
-const double* Basis::getAbscissas() {
+const double* Basis::getAbscissas() const {
   if (nBasis != 0) {
     return abscissas;
   }
   return 0;
 }
 
-double* Basis::coefficientsToValuesMatrix() {
+double* Basis::coefficientsToValuesMatrix() const {
   double *coefficientsToValuesMatrix = new double[nBasis*nBasis];
   /*
   for (int iRow = 0; iRow < nBasis; iRow++) {
@@ -51,7 +51,7 @@ double* Basis::coefficientsToValuesMatrix() {
   return coefficientsToValuesMatrix;
 }
 
-const double* Basis::getValuesToCoefficientsMatrix() {
+const double* Basis::getValuesToCoefficientsMatrix() const {
 #warning "Should maybe do some error checking."
   if (valuesToCoefficients == NULL) {
     valuesToCoefficients = coefficientsToValuesMatrix();
@@ -66,11 +66,11 @@ const double* Basis::getValuesToCoefficientsMatrix() {
   return valuesToCoefficients;
 }
 
-int Basis::index(int iRow, int iCol) {
+int Basis::index(int iRow, int iCol) const {
   return nBasis*iRow + iCol;
 }
 
-const double* Basis::getDifferentiationMatrix() {
+const double* Basis::getDifferentiationMatrix() const {
   if (differentiationMatrix == NULL) {
     // First we transform values to coefficients, then we compute the
     // derivative using the coefficients.
@@ -96,7 +96,7 @@ const double* Basis::getDifferentiationMatrix() {
   return differentiationMatrix;
 }
 
-void Basis::fillCoefficients(const double* values, double* coeffs) {
+void Basis::fillCoefficients(const double* values, double* coeffs) const {
   const double* v2c = getValuesToCoefficientsMatrix();
   for (int iRow = 0; iRow < nBasis; iRow++) {
     coeffs[iRow] = 0.0;
@@ -107,7 +107,7 @@ void Basis::fillCoefficients(const double* values, double* coeffs) {
 }
 
 double* Basis::interpolate(const double* values, 
-    const double* x, int nPoints) {
+    const double* x, int nPoints) const {
   double* fAtX = new double[nPoints];
   double coeffs[nBasis];
   fillCoefficients(values, coeffs);
@@ -117,7 +117,7 @@ double* Basis::interpolate(const double* values,
   return fAtX;
 }
 
-double Basis::integrate(const double* values) {
+double Basis::integrate(const double* values) const {
   double integral = 0.0;
   const double* weights = getAbscissas();
   for (int i = 0; i < nBasis; i++) integral += weights[i + nBasis]*values[i];

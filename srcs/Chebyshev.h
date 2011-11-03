@@ -31,6 +31,15 @@ class Chebyshev: public Basis {
     virtual bool setRank(int N) = 0;
 
     /**
+     * \brief Returns the abscissas for rank N.
+     * \param N The number of total abscissas to return.
+     * \retval abscissas A new double[N] containing the abscissas.
+     */
+    virtual double *getAbscissas(int N) const = 0;
+
+    using Basis::getAbscissas;
+
+    /**
      * The destructor, to take care of extra news.
      */
     ~Chebyshev();
@@ -41,7 +50,9 @@ class Chebyshev: public Basis {
      * basis functions. Remember to delete[] the returned matrix.
      * \retval A new double[] containing the described matrix.
      */
-    double* chebyshevToTaylorCoefficientsMatrix();
+    double* chebyshevToTaylorCoefficientsMatrix() const;
+
+    virtual double evaluate(double x, const double* coeffs) const;
 
   protected:
 
@@ -56,7 +67,7 @@ class Chebyshev: public Basis {
      * \param x The coordinate to evaluate the coefficient at.
      * \retval The parameter alpha.
      */
-    virtual double alpha(int n, double x);
+    virtual double alpha(int n, double x) const;
 
     /**
      * The parameter beta in the recursion relation for the family of
@@ -69,17 +80,7 @@ class Chebyshev: public Basis {
      * \param x The coordinate to evaluate the coefficient at.
      * \retval The parameter beta.
      */
-    virtual double beta(int n, double x);
-
-    /**
-     * Evaluates the function represented by the coefficients at the
-     * point x using the recursion relation between the polynomials to
-     * minimize the number of computations at each step.
-     * \param x The coordinate to evaluate the point at.
-     * \param coeffs The coefficients defining the function.
-     * \retval The function evaluated at the point x.
-     */
-    virtual double evaluate(double x, double* coeffs);
+    virtual double beta(int n, double x) const;
 
     /**
      * The individual Chebyshev basis functions. Not meant to be used
@@ -97,7 +98,7 @@ class Chebyshev: public Basis {
      * that function.
      * \retval The coefficients-to-coefficients-of-derivative operator.
      */
-    virtual double* coefficientsOfDerivativeMatrix();
+    virtual double* coefficientsOfDerivativeMatrix() const ;
 
 };
 #endif

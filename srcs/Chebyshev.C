@@ -9,11 +9,11 @@ Chebyshev::~Chebyshev() {
   delete[] abscissas;
 }
 
-double Chebyshev::alpha(int n, double x) {
+double Chebyshev::alpha(int n, double x) const {
   return -2.0*x;
 }
 
-double Chebyshev::beta(int n, double x) {
+double Chebyshev::beta(int n, double x) const {
   return 1.;
 }
 
@@ -28,7 +28,7 @@ double Chebyshev::function(int N, double x) const {
   }
 }
 
-double* Chebyshev::coefficientsOfDerivativeMatrix() {
+double* Chebyshev::coefficientsOfDerivativeMatrix() const {
   // From formula A.15 of Boyd.
   double* differentiate = new double[nBasis*nBasis];
   for (int i = 0; i < nBasis*nBasis; i++) differentiate[i] = 0.0;
@@ -47,7 +47,7 @@ double* Chebyshev::coefficientsOfDerivativeMatrix() {
   return differentiate;
 }
 
-double Chebyshev::evaluate(double x, double* coeffs) {
+double Chebyshev::evaluate(double x, const double* coeffs) const {
   double tMinus1 = 1.0;
   double t = x;
   double result = coeffs[0] + x*coeffs[1];
@@ -60,7 +60,7 @@ double Chebyshev::evaluate(double x, double* coeffs) {
   return result;
 }
 
-double* Chebyshev::chebyshevToTaylorCoefficientsMatrix() {
+double* Chebyshev::chebyshevToTaylorCoefficientsMatrix() const {
   double* matrix = new double[nBasis*nBasis];
   for (int i = 0; i < nBasis*nBasis; i++) matrix[i] = 0;
   matrix[0] = 1.; // T_0(x) = 1 = x^0.

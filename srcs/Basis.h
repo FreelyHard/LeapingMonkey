@@ -40,7 +40,7 @@ class Basis {
      * returns NULL.
      * \retval The array of abscissas.
      */
-    const double* getAbscissas();
+    const double* getAbscissas() const;
 
     /**
      * Returns a pointer to the differentiation matrix. The
@@ -50,7 +50,7 @@ class Basis {
      * \retval The matrix which differentiates functions (represented by
      * vectors).
      */
-    const double* getDifferentiationMatrix();
+    const double* getDifferentiationMatrix() const;
     
     /**
      * The matrix operator which transforms between values at the
@@ -58,7 +58,7 @@ class Basis {
      * Basis polynomial interpolant. Remember to delete[] the matrix
      * when you are finished with it!
      */
-    const double* getValuesToCoefficientsMatrix();
+    const double* getValuesToCoefficientsMatrix() const;
 
     /**
      * Interpolates the function represented by values at the nPoints
@@ -69,7 +69,8 @@ class Basis {
      * \param nPoints The number of points to interpolate.
      * \retval The function evaluated at the points x.
      */
-    double* interpolate(const double* values, const double* x, int nPoints);
+    double* interpolate(const double* values, const double* x, int nPoints)
+      const;
 
     /**
      * Returns the rank of the basis. The number of basis functions, the
@@ -84,7 +85,7 @@ class Basis {
      * \param iCol The column index.
      * \retval The index of coefficientsToValues etc.
      */
-    int index(int iRow, int iCol);
+    int index(int iRow, int iCol) const;
 
     /**
      * From a vector of values, fills the vector of coefficients.
@@ -92,7 +93,7 @@ class Basis {
      * points.
      * \param coefficients The vector of coefficients to be filled.
      */
-    void fillCoefficients(const double* values, double* coefficients);
+    void fillCoefficients(const double* values, double* coefficients) const;
 
     /**
      * Integrates the function whose value at the collocation points are
@@ -100,7 +101,17 @@ class Basis {
      * \param values The value of the function at the abscissas.
      * \retval The integral of the function, using Gaussian quadrature.
      */
-    double integrate(const double* values);
+    double integrate(const double* values) const;
+
+    /**
+     * Evaluates the function represented by the coefficients at the
+     * point x using the recursion relation between the polynomials to
+     * minimize the number of computations at each step.
+     * \param x The coordinate to evaluate the point at.
+     * \param coeffs The coefficients defining the function.
+     * \retval The function evaluated at the point x.
+     */
+    virtual double evaluate(double x, const double* coeffs) const = 0;
 
   protected:
 
@@ -115,7 +126,7 @@ class Basis {
      * \param x The coordinate to evaluate the coefficient at.
      * \retval The parameter alpha.
      */
-    virtual double alpha(int n, double x) = 0;
+    virtual double alpha(int n, double x) const = 0;
 
     /**
      * The parameter beta in the recursion relation for the family of
@@ -128,17 +139,7 @@ class Basis {
      * \param x The coordinate to evaluate the coefficient at.
      * \retval The parameter beta.
      */
-    virtual double beta(int n, double x) = 0;
-
-    /**
-     * Evaluates the function represented by the coefficients at the
-     * point x using the recursion relation between the polynomials to
-     * minimize the number of computations at each step.
-     * \param x The coordinate to evaluate the point at.
-     * \param coeffs The coefficients defining the function.
-     * \retval The function evaluated at the point x.
-     */
-    virtual double evaluate(double x, double* coeffs) = 0;
+    virtual double beta(int n, double x) const = 0;
 
     /**
      * The individual basis functions. Not meant to be used
@@ -158,7 +159,7 @@ class Basis {
      * with it.
      * \retval The coefficient-to-values matrix operator.
      */
-    virtual double* coefficientsToValuesMatrix();
+    virtual double* coefficientsToValuesMatrix() const;
 
     /**
      * Builds and returns the matrix that takes a vector of coefficients
@@ -166,7 +167,7 @@ class Basis {
      * that function.
      * \retval The coefficients-to-coefficients-of-derivative operator.
      */
-    virtual double* coefficientsOfDerivativeMatrix() = 0;
+    virtual double* coefficientsOfDerivativeMatrix() const = 0;
 
     /**
      * The number of basis functions.
@@ -181,11 +182,11 @@ class Basis {
     /**
      * The values to coefficients matrix.
      */
-    double* valuesToCoefficients;
+    mutable double* valuesToCoefficients;
 
     /**
      * The matrix which differentiates (vector represented) functions.
      */
-    double* differentiationMatrix;
+    mutable double* differentiationMatrix;
 };
 #endif

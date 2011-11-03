@@ -23,5 +23,8 @@ class ChebyshevExtrema: public Chebyshev {
      */
     virtual bool setRank(int N);
 
+    virtual double *getAbscissas(int N) const;
+
+    using Basis::getAbscissas;
 };
 #endif

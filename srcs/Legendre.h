@@ -29,6 +29,8 @@ class Legendre: public Basis {
      */
     virtual bool setRank(int N);
 
+    virtual double evaluate(double x, const double* coeffs) const;
+
   protected:
 
     /**
@@ -42,7 +44,7 @@ class Legendre: public Basis {
      * \param x The coordinate to evaluate the coefficient at.
      * \retval The parameter alpha.
      */
-    virtual double alpha(int n, double x);
+    virtual double alpha(int n, double x) const ;
 
     /**
      * The parameter beta in the recursion relation for the family of
@@ -55,17 +57,7 @@ class Legendre: public Basis {
      * \param x The coordinate to evaluate the coefficient at.
      * \retval The parameter beta.
      */
-    virtual double beta(int n, double x);
-
-    /**
-     * Evaluates the function represented by the coefficients at the
-     * point x using the recursion relation between the polynomials to
-     * minimize the number of computations at each step.
-     * \param x The coordinate to evaluate the point at.
-     * \param coeffs The coefficients defining the function.
-     * \retval The function evaluated at the point x.
-     */
-    virtual double evaluate(double x, double* coeffs);
+    virtual double beta(int n, double x) const;
 
     /**
      * The individual Legendre basis functions. Not meant to be used
@@ -83,6 +75,6 @@ class Legendre: public Basis {
      * that function.
      * \retval The coefficients-to-coefficients-of-derivative operator.
      */
-    virtual double* coefficientsOfDerivativeMatrix();
+    virtual double* coefficientsOfDerivativeMatrix() const;
 };
 #endif
